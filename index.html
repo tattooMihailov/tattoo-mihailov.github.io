@@ -1,47 +1,315 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Soul & Ink by Mihailov</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body { background-color: #000; color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; }
-        header { padding: 2em; }
-        footer { padding: 2em; font-size: 0.9em; }
-        a { color: gold; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .lang-toggle { position: absolute; top: 1em; right: 1em; }
-        .lang-toggle button { background: gold; border: none; padding: 0.5em 1em; cursor: pointer; margin-left: 0.5em; }
-    </style>
-    <script>
-        function switchLanguage(lang) {
-            const en = document.querySelectorAll('.lang-en');
-            const pt = document.querySelectorAll('.lang-pt');
-            en.forEach(el => el.style.display = (lang === 'en') ? 'block' : 'none');
-            pt.forEach(el => el.style.display = (lang === 'pt') ? 'block' : 'none');
-        }
-        window.onload = () => switchLanguage('en');
-    </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Soul & Ink by Mihailov</title>
+<style>
+  /* --- Сброс стилей и базовая стилизация --- */
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0a0a0a;
+    color: #e6d1a3;
+    overflow-x: hidden;
+  }
+  a {
+    color: #d4af37;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  /* --- Сферическая золотая сетка фон --- */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 50%; left: 50%;
+    width: 150vw; height: 150vh;
+    background: radial-gradient(circle at center, transparent 65%, rgba(212, 175, 55, 0.05) 66%, rgba(212, 175, 55, 0.15) 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: spin 180s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @keyframes spin {
+    from {transform: translate(-50%, -50%) rotate(0deg);}
+    to {transform: translate(-50%, -50%) rotate(360deg);}
+  }
+  /* --- Контейнер сайта --- */
+  #app {
+    position: relative;
+    z-index: 10;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+  }
+  header h1 {
+    font-family: 'Gothic A1', serif;
+    font-size: 2.8rem;
+    color: #d4af37;
+    letter-spacing: 3px;
+    margin: 0;
+    text-shadow: 0 0 10px #d4af37aa;
+  }
+  /* --- Переключатель языка --- */
+  #lang-toggle {
+    position: fixed;
+    top: 20px; right: 20px;
+    width: 36px; height: 24px;
+    cursor: pointer;
+    z-index: 20;
+  }
+  #lang-toggle img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 0 5px #d4af37aa;
+  }
+  /* --- Кнопки соцсетей и контактов --- */
+  #contacts {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  #contacts a {
+    margin: 0 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #d4af37;
+  }
+  /* --- Кружки-инфо --- */
+  .info-circles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .circle {
+    background: radial-gradient(circle at center, #d4af37aa, #b38f20cc);
+    border-radius: 50%;
+    height: 200px;
+    cursor: pointer;
+    color: #0a0a0a;
+    box-shadow:
+      0 0 8px 2px #d4af37cc,
+      inset 0 0 12px 4px #fff2c8aa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 20px;
+    user-select: none;
+    transition: transform 0.4s ease;
+    position: relative;
+  }
+  .circle:hover {
+    transform: rotate(5deg) scale(1.05);
+    box-shadow:
+      0 0 12px 4px #fff6a2cc,
+      inset 0 0 16px 6px #fff6a2ff;
+  }
+  .circle.open {
+    background: #d4af37ee;
+    color: #0a0a0a;
+  }
+  .circle .short-text {
+    flex: 0 0 auto;
+  }
+  .circle .full-text {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    margin-top: 10px;
+    font-weight: 400;
+    font-size: 0.85rem;
+    line-height: 1.3rem;
+    display: none;
+    max-height: 120px;
+    text-align: left;
+  }
+  .circle.open .full-text {
+    display: block;
+  }
+  /* --- Галерея (простая) --- */
+  #gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+    gap: 10px;
+    margin-bottom: 60px;
+  }
+  #gallery img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 0 8px #d4af37bb;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  #gallery img:hover {
+    transform: scale(1.1);
+  }
+  /* --- Модальное окно для увеличения изображений --- */
+  #modal {
+    position: fixed;
+    display: none;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+  }
+  #modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+  }
+  /* --- Футер --- */
+  footer {
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 0.8rem;
+    color: #aaa;
+    border-top: 1px solid #444;
+    user-select: none;
+  }
+  /* --- Scrollbar для полного текста --- */
+  .circle .full-text::-webkit-scrollbar {
+    width: 6px;
+  }
+  .circle .full-text::-webkit-scrollbar-thumb {
+    background-color: #d4af37cc;
+    border-radius: 3px;
+  }
+  /* --- Медиа --- */
+  @media (max-width: 600px) {
+    .circle {
+      height: 170px;
+      font-size: 1rem;
+      padding: 15px;
+    }
+    #contacts a {
+      margin: 0 8px;
+      font-size: 1rem;
+    }
+  }
+</style>
 </head>
 <body>
-    <div class="lang-toggle">
-        <button onclick="switchLanguage('en')">EN</button>
-        <button onclick="switchLanguage('pt')">PT</button>
+
+<!-- Переключатель языка -->
+<div id="lang-toggle" title="Switch language" aria-label="Language toggle" role="button" tabindex="0">
+  <img src="https://flagcdn.com/w20/gb.png" alt="English" id="lang-flag" />
+</div>
+
+<div id="app">
+  <header>
+    <h1>Soul & Ink by Mihailov</h1>
+  </header>
+
+  <!-- Контакты -->
+  <section id="contacts" aria-label="Contact links">
+    <a href="https://instagram.com/tattoo_mihailov" target="_blank" rel="noopener noreferrer" aria-label="Instagram">Instagram</a>
+    <a href="https://wa.me/351934351374" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">WhatsApp</a>
+    <a href="tel:+351934351374" aria-label="Phone number">+351 934 351 374</a>
+  </section>
+
+  <!-- Кружки с информацией -->
+  <section class="info-circles" aria-label="Tattoo information sections">
+    <div class="circle" tabindex="0" role="button" aria-expanded="false" aria-controls="info1">
+      <div class="short-text">5 steps to get ready</div>
+      <div class="full-text" id="info1">
+        1. A few days before the session avoid alcohol and blood thinners.<br />
+        2. Eat well before the session.<br />
+        3. Wear or bring comfortable clothes.<br />
+        4. Dry skin requires additional moisturizing during a week before the session.<br />
+        5. Cover from sun the area of the skin where tattoo will be done.
+      </div>
     </div>
-    <header>
-        <h1>Soul & Ink by Mihailov</h1>
-        <p class="lang-en">Premium tattoos in Lisbon. Realism, traditional, color & more.</p>
-        <p class="lang-pt">Tatuagens premium em Lisboa. Realismo, tradicional, cor e mais.</p>
-        <p>
-            <a href="https://www.instagram.com/tattoo_mihailov" target="_blank">Instagram</a> |
-            <a href="https://wa.me/351934351374" target="_blank">WhatsApp</a> |
-            <a href="tel:+351934351374">+351 934 351 374</a>
-        </p>
-    </header>
-    <footer>
-        <p class="lang-en">© 2025 Soul & Ink by Mihailov. All rights reserved.</p>
-        <p class="lang-pt">© 2025 Soul & Ink by Mihailov. Todos os direitos reservados.</p>
-    </footer>
-</body>
-</html>
+    <div class="circle" tabindex="0" role="button" aria-expanded="false" aria-controls="info2">
+      <div class="short-text">Aftercare Routine</div>
+      <div class="full-text" id="info2">
+        I see no reason to pay expensive for a tattoo if you don’t plan take care of it, it would be very stupid.<br /><br />
+        So if you want to keep your quality expensive accessory in good condition for a long time, make sure you follow these recommendations:<br />
+        - Wash the tattoo with a warm water and baby soap or a special aftercare product.<br />
+        - Dry with a paper towel and apply a healing cream 3-4 times a day.<br />
+        (I recommend a special for healing tattoos cream, but you can use any moisturizing one).<br />
+        - Cover the tattoo with a disposable baby diaper when going out, please make sure it doesn’t sweat under the diaper.<br />
+        - Avoid rubbing, scratching, tearing off crusts.<br />
+        - Skip swimming, sauna and physical activity for 2 weeks.<br />
+        - In sunny period use the sunscreen/ SPF and avoid direct sun rays.<br /><br />
+        Additional recommendations may be added with skin with specifics.
+      </div>
+    </div>
+    <div class="circle" tabindex="0" role="button" aria-expanded="false" aria-controls="info3">
+      <div class="short-text">General principles of Tattoo aftercare</div>
+      <div class="full-text" id="info3">
+        Everybody wants a quality tattoo, but only a few are ready to aftercare properly of a fresh tattoo.<br />
+        If you don’t aftercare a fresh tattoo, it doesn’t matter what a brilliant master did it for you, the result will be the only one - a shitty tattoo.<br /><br />
+        First, aftercare is a mandatory step to make the healing process go smoothly and timely. Aftercare also let a tattoo stay clean, bright and contrast longer.<br />
+        Second, the first days of aftercare are the most critical as the human’s body perceives a tattoo as a foreign body and tries to get rid of it in every possible way. The immune and lymphatic systems start working harder, you can experience higher temperature and weakness. So please mind that and be careful and cautious. Allow yourself being in a comfort and stay healthy. As a healthy body is much faster to heal your tattoo.<br />
+        Third, colored tattoos need a little bit more attention and aftercare than Black&grey, as they are painted more densely, so the skin is more traumatized then. Please also mind the state of your skin and choose individual aftercare with your master.<br /><br />
+        Stay tuned: Next time I will tell you about the practical advise and step-by-step tattoo aftercare.
+      </div>
+    </div>
+    <div class="circle" tabindex="0" role="button" aria-expanded="false" aria-controls="info4">
+      <div class="short-text">Stages of work in Tattoo</div>
+      <div class="full-text" id="info4">
+        What happens after you have contacted me:<br />
+        1. Consultation ( online or offline)<br />
+        2. We agree on the day of appointment and I prepare the sketch.<br />
+        3. You come to the salon and we decide on location and size of the tattoo.<br />
+        4. After that I start to prepare the workplace and transfer for copy on the body. It takes around 20-25 minutes, during this time you can drink/eat something.<br />
+        5. We do a tattoo (In next post I will tell you about a tattoo-session duration).<br />
+        6. Upon completion I treat the skin and give you recommendations for the aftercare of the tattoo.<br />
+        7. After 1.5 - 2 months you come to me to check if the correction is needed.
+      </div>
+    </div>
+  </section>
+
+  <!-- Галерея (здесь добавляй свои фото в img src) -->
+  <section id="gallery" aria-label="Gallery">
+    <!-- Примеры изображений: замени src на свои -->
+    <img src="https://lh3.googleusercontent.com/d/1BeSeUPp-_0cz4CChKBGI_LkM1lxLo6vN=w3000-h5031-iv1" alt="Tattoo example 1" />
+    <img src="https://lh3.googleusercontent.com/d/1EHq7FcVzT1SEQ2_nizR9uVpzzWCUwlVF=w3000-h5031-iv1" alt="Tattoo example 2" />
+    <img src="https://lh3.googleusercontent.com/d/1uL4d4cq5Jk8Q40CfdT6iyraagyxLIWMd=w3000-h5031-iv1" alt="Tattoo example 3" />
+    <img src="https://lh3.googleusercontent.com/d/1HSHn4I-6KKIWqaEV73wxaffMnackH3t8=w3000-h5031-iv1" alt="Tattoo example 4" />
+    <img src="https://lh3.googleusercontent.com/d/1rdMkMtSbYUbP0qSG8Jwxc07kvq8Zg98s=w3000-h5031-iv1" alt="Tattoo example 5" />
+  </section>
+</div>
+
+<!-- Модальное окно для просмотра изображений -->
+<div id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <img src="" alt="Expanded tattoo image" />
+</div>
+
+<footer>
+  © 2025 Soul & Ink by Mihailov. All rights reserved.
+</footer>
+
+<script>
+  // Переключение языка (пока просто меняем тексты на месте)
+  const langToggle = document.getElementById('lang-toggle');
+  const langFlag = document.getElementById('lang-flag');
+  let currentLang = 'en';
+
+  const texts = {
+    en: {
+      title: 'Soul & Ink by Mihailov',
+      contacts: {
+        instagram: 'Instagram',
+        whatsapp: 'WhatsApp',
+        phone: '+351 934 351 374'
+      },
+      info: [
+        `1. A few days before the session avoid alcohol and blood thinners.<br />
+         2. Eat well before the session.<br />
+         3. Wear or bring comfortable clothes.<br />
+         4. Dry skin requires additional moisturizing during a week before the session.<br />
+         5. Cover from sun the
