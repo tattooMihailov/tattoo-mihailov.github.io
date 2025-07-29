@@ -2,83 +2,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
     <title>Soul & Ink by Mihailov</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            margin: 0;
-            background-color: #111;
-            color: #fff;
-            font-family: 'Arial', sans-serif;
-        }
-        header, section, footer {
-            padding: 40px 20px;
-            text-align: center;
-        }
-        nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            background: #000;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        nav .lang-switcher {
-            font-size: 20px;
-        }
-        h1 { color: gold; }
-        img.gallery {
-            width: 90%%;
-            max-width: 400px;
-            margin: 10px auto;
-            display: block;
-            border: 2px solid gold;
-        }
+        body { background-color: #000; color: #fff; font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; }
+        header { padding: 2em; }
+        footer { padding: 2em; font-size: 0.9em; }
+        a { color: gold; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .lang-toggle { position: absolute; top: 1em; right: 1em; }
+        .lang-toggle button { background: gold; border: none; padding: 0.5em 1em; cursor: pointer; margin-left: 0.5em; }
     </style>
+    <script>
+        function switchLanguage(lang) {
+            const en = document.querySelectorAll('.lang-en');
+            const pt = document.querySelectorAll('.lang-pt');
+            en.forEach(el => el.style.display = (lang === 'en') ? 'block' : 'none');
+            pt.forEach(el => el.style.display = (lang === 'pt') ? 'block' : 'none');
+        }
+        window.onload = () => switchLanguage('en');
+    </script>
 </head>
 <body>
-
-<nav>
-    <div style="color: gold; font-weight: bold;">Soul & Ink</div>
-    <div class="lang-switcher">🇬🇧 / 🇵🇹</div>
-</nav>
-
-<header>
-    <h1>Welcome to Soul & Ink by Mihailov</h1>
-    <p>Premium tattooing in Lisbon. Realism • Traditional • Lettering</p>
-</header>
-
-<section id="about">
-    <h2>About the Artist</h2>
-    <p>Mihailov is a professional tattoo artist with a passion for detail, contrast, and expression. Based in Lisbon, available by appointment.</p>
-</section>
-
-<section id="gallery">
-    <h2>Gallery</h2>
-    <img class="gallery" src="gallery1.jpg" alt="Tattoo 1"/>
-    <img class="gallery" src="gallery2.jpg" alt="Tattoo 2"/>
-    <img class="gallery" src="gallery3.jpg" alt="Tattoo 3"/>
-    <img class="gallery" src="gallery4.jpg" alt="Tattoo 4"/>
-    <img class="gallery" src="gallery5.jpg" alt="Tattoo 5"/>
-</section>
-
-<section id="consultation">
-    <h2>Consultation</h2>
-    <p>A consultation allows you to discuss your preferences and ideas with your tattoo artist. It helps avoid misunderstandings and prepares you for the session.</p>
-</section>
-
-<section id="aftercare">
-    <h2>Aftercare</h2>
-    <p>Taking care of your tattoo is essential for proper healing. Wash gently, apply ointment, avoid sun and swimming for 2 weeks.</p>
-</section>
-
-<footer>
-    <p>Contact: <a href="mailto:mihailm9snik666@gmail.com" style="color:gold;">mihailm9snik666@gmail.com</a><br/>
-    Telegram: +351 934 351 374<br/>
-    Instagram: @tattoo_mihailov</p>
-</footer>
-
+    <div class="lang-toggle">
+        <button onclick="switchLanguage('en')">EN</button>
+        <button onclick="switchLanguage('pt')">PT</button>
+    </div>
+    <header>
+        <h1>Soul & Ink by Mihailov</h1>
+        <p class="lang-en">Premium tattoos in Lisbon. Realism, traditional, color & more.</p>
+        <p class="lang-pt">Tatuagens premium em Lisboa. Realismo, tradicional, cor e mais.</p>
+        <p>
+            <a href="https://www.instagram.com/tattoo_mihailov" target="_blank">Instagram</a> |
+            <a href="https://wa.me/351934351374" target="_blank">WhatsApp</a> |
+            <a href="tel:+351934351374">+351 934 351 374</a>
+        </p>
+    </header>
+    <footer>
+        <p class="lang-en">© 2025 Soul & Ink by Mihailov. All rights reserved.</p>
+        <p class="lang-pt">© 2025 Soul & Ink by Mihailov. Todos os direitos reservados.</p>
+    </footer>
 </body>
 </html>
